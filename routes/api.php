@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('/category', [CategoryController::class, 'findAllCategory']);
+Route::get('/category/{id}', [CategoryController::class, 'findById']);
+Route::post('/category', [CategoryController::class, 'createCategory']);
+Route::post('/category/{id}', [CategoryController::class, 'updateCategory']);
+Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
