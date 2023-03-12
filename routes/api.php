@@ -30,8 +30,10 @@ Route::delete('/category/{id}', [CategoryController::class, 'deleteCategory']);
 Route::get('/product', [ProductController::class, 'findAllProduct']);
 Route::get('/product/{id}', [ProductController::class, 'findById']);
 Route::post('/product', [ProductController::class, 'createProduct']);
+Route::post('/product/add-image/{id}', [ProductController::class, 'addProductPicture']);
 Route::post('/product/{id}', [ProductController::class, 'updateProduct']);
 Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
+Route::delete('/product/delete-image/{imageId}', [ProductController::class, 'deleteProductPicture']);
 
 Route::get('/category-product', [CategoryProductController::class, 'findAllCategoryProduct']);
 Route::get('/category-product/{categoryId}', [CategoryProductController::class, 'findByCategoryProduct']);

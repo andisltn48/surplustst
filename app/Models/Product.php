@@ -23,4 +23,9 @@ class Product extends Model
     {
         return $this->hasOne('App\Models\Category','product_id','id');
     }
+
+    public function product_image()
+    {
+        return $this->hasOne('App\Models\ProductImage','product_id','id');
+    }
 }
