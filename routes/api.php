@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +32,9 @@ Route::get('/product/{id}', [ProductController::class, 'findById']);
 Route::post('/product', [ProductController::class, 'createProduct']);
 Route::post('/product/{id}', [ProductController::class, 'updateProduct']);
 Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
+
+Route::get('/category-product', [CategoryProductController::class, 'findAllCategoryProduct']);
+Route::get('/category-product/{categoryId}', [CategoryProductController::class, 'findByCategoryProduct']);
+Route::post('/category-product', [CategoryProductController::class, 'createCategoryProduct']);
+Route::post('/category-product/{id}', [CategoryProductController::class, 'updateCategoryProduct']);
+Route::delete('/category-product/{id}', [CategoryProductController::class, 'deleteCategoryProduct']);

@@ -2,28 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\CategoryProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class CategoryProductController extends Controller
 {
-    public function findAllProduct()
+    public function findAllCategoryProduct()
     {
-        $products = Product::all();
+        $categories = CategoryProduct::with('product','category')->get();
         return response()->json([
             'status' => 200,
-            'data' => count($products) ? $products : null
+            'data' => count($categories) ? $categories : null
         ],200);
     }
 
-    public function findById($productId)
+    public function findByCategoryProduct($categoryId)
     {
-        $productData = Product::find($productId);
-        if ($productData) {
+        $data = CategoryProduct::with('product')->wherehas('category', function($q) use($categoryId){
+            $q->where('id',$categoryId);
+        })
+        ->get();
+        if ($data) {
             return response()->json([
                 'statusCode' => 200,
-                'data' => $productData
+                'data' => $data
             ], 200);
         }
         return response()->json([
@@ -32,11 +35,11 @@ class ProductController extends Controller
         ], 404);
     }
 
-    public function createProduct(Request $request)
+    public function createCategoryProduct(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'description' => 'required',
+            'product_id' => 'required',
+            'category_id' => 'required',
             'enable' => 'required|boolean'
         ]);
         if ($validator->fails()) {
@@ -50,18 +53,18 @@ class ProductController extends Controller
             ], 400);
         }
 
-        $createdData = Product::create($request->all());
+        $createdData = CategoryProduct::create($request->all());
         return response()->json([
             'statusCode' => 201,
             'data' => $createdData
         ], 201);
     }
 
-    public function updateProduct(Request $request, $productId)
+    public function updateCategoryProduct(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'description' => 'required',
+            'product_id' => 'required',
+            'category_id' => 'required',
             'enable' => 'required|boolean'
         ]);
         if ($validator->fails()) {
@@ -75,12 +78,12 @@ class ProductController extends Controller
             ], 400);
         }
 
-        $productData = Product::find($productId);
-        if ($productData) {
-            $productData->update($request->all());
+        $categoryData = CategoryProduct::find($id);
+        if ($categoryData) {
+            $categoryData->update($request->all());
             return response()->json([
                 'statusCode' => 201,
-                'data' => $productData
+                'data' => $categoryData
             ], 201);
         }
         return response()->json([
@@ -89,13 +92,13 @@ class ProductController extends Controller
         ], 404);
     }
 
-    public function deleteProduct($productId)
+    public function deleteCategoryProduct($id)
     {
-        $productData = Product::destroy($productId);
-        if ($productData) {
+        $categoryData = CategoryProduct::destroy($id);
+        if ($categoryData) {
             return response()->json([
                 'statusCode' => 201,
-                'deletedId' => intval($productId)
+                'deletedId' => intval($id)
             ], 201);
         }
         return response()->json([

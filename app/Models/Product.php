@@ -18,4 +18,9 @@ class Product extends Model
         }
         return false;
     }
+
+    public function category_product()
+    {
+        return $this->hasOne('App\Models\Category','product_id','id');
+    }
 }
